@@ -37,18 +37,19 @@ export function drawTitle(ctx, time, best) {
   veil(ctx, 0.72);
   drawLogo(ctx, VIEW.width / 2, 210, 72);
   text(ctx, 'Three nights. Three vaults. Not one alarm.', VIEW.width / 2, 290, { size: 22, color: PALETTE.muted });
-  panel(ctx, 360, 330, 560, 230, '#343a66');
+  panel(ctx, 360, 320, 560, 258, '#343a66');
   const lines = [
     ['WASD / Arrows', 'sneak through the building'],
     ['Shift', 'sprint - fast, but guards hear it'],
     ['Violet hatched floor', 'shadow: you are noticed 3x slower'],
     ['E (hold)', 'crack the display case'],
-    ['1 2 3 + Click', 'smoke, coin lure, camera jammer'],
+    ['Red beams', 'lasers blink on and off - time the gap'],
+    ['1 2 3 + Click', 'smoke, coin lure, jammer (camera/laser)'],
     ['Tab', 'plan view: every patrol route'],
   ];
   lines.forEach(([k, v], i) => {
-    text(ctx, k, 600, 368 + i * 32, { size: 16, bold: true, color: PALETTE.loot, align: 'right' });
-    text(ctx, v, 620, 368 + i * 32, { size: 16, align: 'left' });
+    text(ctx, k, 600, 352 + i * 31, { size: 16, bold: true, color: PALETTE.loot, align: 'right' });
+    text(ctx, v, 620, 352 + i * 31, { size: 16, align: 'left' });
   });
   const blink = Math.sin(time * 4) > -0.2;
   if (blink) text(ctx, 'Press ENTER or click to begin', VIEW.width / 2, 610, { size: 24, bold: true, color: PALETTE.scarf });
@@ -64,7 +65,7 @@ export function drawBrief(ctx, world) {
   text(ctx, `JOB ${world.levelIndex + 1}: ${world.level.name.toUpperCase()}`, x + 22, y + 36, { size: 22, bold: true, align: 'left', color: PALETTE.loot });
   text(ctx, world.level.brief, x + 22, y + 66, { size: 13, align: 'left' });
   text(ctx, `Prize: ${world.level.prize}  ($${world.level.value.toLocaleString('en-US')})`, x + 22, y + 94, { size: 14, align: 'left', color: PALETTE.text });
-  text(ctx, `${world.guards.length} guards, ${world.cameras.length} cameras. Dotted lines: their routes and sweeps.`, x + 22, y + 120, { size: 13, align: 'left', color: PALETTE.muted });
+  text(ctx, `${world.guards.length} guards, ${world.cameras.length} cameras, ${world.lasers.length} lasers. Dotted lines: routes and sweeps.`, x + 22, y + 120, { size: 13, align: 'left', color: PALETTE.muted });
   text(ctx, 'Plan your way in. Press ENTER to go.', x + 22, y + 150, { size: 16, bold: true, align: 'left', color: PALETTE.scarf });
   text(ctx, 'YOU', world.thief.x, world.thief.y - 20, { size: 13, bold: true, color: PALETTE.scarf });
 }

@@ -33,6 +33,7 @@ function tone(freq, duration, { type = 'sine', gain = 0.4, slide = 0, delay = 0 
 }
 
 const CUES = {
+  laser: () => { tone(1480, 0.08, { type: 'sawtooth', gain: 0.18 }); tone(740, 0.3, { type: 'sawtooth', gain: 0.18, delay: 0.08 }); },
   spotted: () => { tone(880, 0.12, { type: 'square', gain: 0.2 }); tone(1175, 0.16, { type: 'square', gain: 0.2, delay: 0.1 }); },
   caught: () => { tone(220, 0.6, { type: 'sawtooth', gain: 0.35, slide: -120 }); tone(233, 0.6, { type: 'sawtooth', gain: 0.25, slide: -130 }); },
   tool: () => tone(520, 0.15, { type: 'triangle', gain: 0.3, slide: 260 }),

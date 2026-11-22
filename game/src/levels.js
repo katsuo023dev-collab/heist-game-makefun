@@ -3,7 +3,8 @@
 //   =  carpet        S  thief start  E  getaway van     $  the prize   *  trinket (bonus cash)
 // Guards walk their route in tile coordinates; `loop` routes close back to the first point,
 // the others walk back and forth. Cameras sit on a tile, face `angle` degrees and sweep `sweep`
-// degrees either side over `period` seconds.
+// degrees either side over `period` seconds. Lasers span tiles on one row or column and are live
+// for `on` seconds, then dark for `off`; `phase` shifts the cycle (0-1).
 
 export const LEVELS = [
   {
@@ -36,6 +37,10 @@ export const LEVELS = [
       { route: [[11, 8], [21, 8], [21, 14], [11, 14]], loop: true, phase: 0 },
       { route: [[27, 2], [37, 2], [37, 7]], loop: false, phase: 0.3 },
       { route: [[23, 9], [28, 9], [28, 16], [23, 16]], loop: true, phase: 0.5 },
+    ],
+    lasers: [
+      { from: [15, 13], to: [16, 13], on: 2.2, off: 1.8, phase: 0 },
+      { from: [15, 7], to: [16, 7], on: 2.2, off: 1.8, phase: 0.5 },
     ],
     cameras: [
       { tile: [12, 9], angle: 100, sweep: 45, period: 6 },
@@ -73,6 +78,10 @@ export const LEVELS = [
       { route: [[17, 1], [26, 1], [26, 5]], loop: false, phase: 0.4 },
       { route: [[37, 7], [37, 12], [32, 12]], loop: false, phase: 0.2 },
       { route: [[5, 17], [30, 17]], loop: false, phase: 0.6 },
+    ],
+    lasers: [
+      { from: [19, 13], to: [22, 13], on: 2.4, off: 1.6, phase: 0 },
+      { from: [32, 6], to: [33, 6], on: 1.6, off: 1.6, phase: 0.25 },
     ],
     cameras: [
       { tile: [12, 10], angle: 20, sweep: 35, period: 6 },
@@ -112,6 +121,10 @@ export const LEVELS = [
       { route: [[24, 10], [38, 10], [38, 16], [24, 16]], loop: true, phase: 0.25 },
       { route: [[2, 16], [22, 16]], loop: false, phase: 0.1 },
       { route: [[9, 1], [16, 1], [16, 5]], loop: false, phase: 0.7 },
+    ],
+    lasers: [
+      { from: [34, 6], to: [34, 6], on: 2, off: 1.5, phase: 0 },
+      { from: [17, 10], to: [21, 10], on: 2.6, off: 1.4, phase: 0.4 },
     ],
     cameras: [
       { tile: [33, 2], angle: 60, sweep: 45, period: 6 },

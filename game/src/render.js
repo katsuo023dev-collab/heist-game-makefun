@@ -231,6 +231,45 @@ function drawEffects(ctx, world) {
   }
 }
 
+/** Live beams glow red with a hot core; a dark beam is a faint dashed line that flickers just before it returns. */
+function drawLasers(ctx, world, time) {
+  for (const laser of world.lasers) {
+    const { a, b } = laser;
+    ctx.save();
+    ctx.lineCap = 'round';
+    if (laser.live) {
+      const hum = 0.75 + Math.sin(time * 30 + laser.id) * 0.25;
+      ctx.strokeStyle = `rgba(255, 74, 94, ${0.28 * hum})`;
+      ctx.lineWidth = 10;
+      ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+      ctx.strokeStyle = PALETTE.danger;
+      ctx.lineWidth = 3;
+      ctx.stroke();
+      ctx.strokeStyle = '#ffd6dc';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    } else {
+      const flicker = laser.warning && Math.sin(time * 40) > 0;
+      ctx.setLineDash([3, 7]);
+      ctx.strokeStyle = flicker ? 'rgba(255, 74, 94, 0.85)' : 'rgba(255, 74, 94, 0.22)';
+      ctx.lineWidth = flicker ? 2 : 1;
+      ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+    }
+    ctx.restore();
+  }
+}
+
+function drawEmitters(ctx, world) {
+  for (const laser of world.lasers) {
+    for (const p of [laser.a, laser.b]) {
+      ctx.fillStyle = '#3a2030';
+      ctx.fillRect(p.x - 4, p.y - 4, 8, 8);
+      ctx.fillStyle = laser.live ? PALETTE.danger : '#6a3a48';
+      ctx.fillRect(p.x - 2, p.y - 2, 4, 4);
+    }
+  }
+}
+
 function drawCamera(ctx, camera) {
   ctx.save();
   ctx.translate(camera.x, camera.y);
@@ -277,10 +316,20 @@ function drawGuard(ctx, guard) {
   if (guard.state === CHASE) mark = '!';
   else if (guard.state === INVESTIGATE || guard.state === SEARCH) mark = '?';
   if (mark) {
+    // A speech-bubble badge so a guard's mood reads at a glance, even in a busy room.
+    const bx = guard.x;
+    const by = guard.y - 26;
     ctx.fillStyle = mark === '!' ? PALETTE.danger : PALETTE.loot;
-    ctx.font = 'bold 20px "Trebuchet MS", sans-serif';
+    ctx.beginPath();
+    ctx.arc(bx, by, 9, 0, Math.PI * 2);
+    ctx.moveTo(bx - 4, by + 7);
+    ctx.lineTo(bx, by + 13);
+    ctx.lineTo(bx + 4, by + 7);
+    ctx.fill();
+    ctx.fillStyle = '#10121f';
+    ctx.font = 'bold 14px "Trebuchet MS", sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText(mark, guard.x, guard.y - 16);
+    ctx.fillText(mark, bx, by + 5);
   }
 }
 
@@ -349,7 +398,9 @@ export function drawWorld(ctx, world, { time, aim = null, plan = false }) {
   drawLoot(ctx, world, time);
   drawCones(ctx, world);
   drawEffects(ctx, world);
+  drawLasers(ctx, world, time);
   drawWalls(ctx, world.grid);
+  drawEmitters(ctx, world);
   if (plan) drawRoutes(ctx, world);
   for (const camera of world.cameras) drawCamera(ctx, camera);
   for (const guard of world.guards) drawGuard(ctx, guard);

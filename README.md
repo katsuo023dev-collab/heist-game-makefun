@@ -10,7 +10,8 @@ crack the display case, and reach the getaway van before the alarm meter fills.
 
 - Guards walk routes, glance at corners, investigate noises, chase what they see and search where they lost you.
 - Cameras sweep on a timer; their cones flush red the instant they see you.
-- Tools cost cash off your take: smoke blocks sight, a coin lures guards, a jammer blinds a camera.
+- Laser tripwires gate the vaults: they blink on a timer and flicker just before they return. Break a live beam and the alarm jumps while every nearby guard comes running.
+- Tools cost cash off your take: smoke blocks sight, a coin lures guards, a jammer blinds a camera or kills a laser.
 - Shadows make you three times harder to notice; sprinting is fast but guards hear it.
 - Past 65% alarm the building goes into lockdown: guards hurry and every cone reaches further.
 - Each getaway is scored: prize + trinkets - kit used - heat, rated Ghost, Shadow, Close Shave or Smash & Grab.

@@ -1,7 +1,8 @@
 // The heist kit: smoke that blocks sight, a coin that lures guards, a jammer that blinds a
-// camera. Every use costs cash out of the final take, so the cheapest plan pays best.
+// camera or kills a laser. Every use costs cash out of the final take, so the cheapest plan pays best.
 import { TOOLS } from './config.js';
 import { hearNoise } from './guards.js';
+import { distanceToBeam } from './lasers.js';
 
 export function createKit() {
   return { selected: 0, charges: TOOLS.map((t) => t.charges), spent: 0, used: 0 };
@@ -34,7 +35,11 @@ export function useTool(kit, world, aimX, aimY) {
       const d = Math.hypot(camera.x - aimX, camera.y - aimY);
       if (d < bestDist) { best = camera; bestDist = d; }
     }
-    if (!best) return { ok: false, text: 'Aim at a camera' };
+    for (const laser of world.lasers ?? []) {
+      const d = distanceToBeam(laser, aimX, aimY);
+      if (d < bestDist) { best = laser; bestDist = d; }
+    }
+    if (!best) return { ok: false, text: 'Aim at a camera or laser' };
     best.jammed = tool.seconds;
   }
   kit.charges[kit.selected] -= 1;

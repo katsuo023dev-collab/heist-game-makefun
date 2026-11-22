@@ -53,7 +53,7 @@ export const ALARM = {
 export const TOOLS = [
   { id: 'smoke', key: '1', name: 'Smoke', cost: 300, charges: 2, range: 240, radius: 62, seconds: 6.5, hint: 'blocks sight' },
   { id: 'coin', key: '2', name: 'Coin', cost: 60, charges: 3, range: 300, radius: 250, seconds: 0, hint: 'lures guards' },
-  { id: 'jammer', key: '3', name: 'Jammer', cost: 220, charges: 2, range: 520, radius: 70, seconds: 7, hint: 'blinds a camera' },
+  { id: 'jammer', key: '3', name: 'Jammer', cost: 220, charges: 2, range: 520, radius: 70, seconds: 7, hint: 'jams cam or laser' },
 ];
 
 export const PALETTE = {

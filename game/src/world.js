@@ -8,6 +8,7 @@ import { createGuard, updateGuard, hearNoise, CHASE } from './guards.js';
 import { createCamera, updateCamera, isJammed } from './cameras.js';
 import { createThief, moveThief, ageSteps } from './thief.js';
 import { createKit, updateSmokes, useTool } from './tools.js';
+import { LASER, breaksBeam, createLaser, updateLaser } from './lasers.js';
 
 /** A small seeded generator (mulberry32) so a replayed run hears the same noises. */
 function nextRandom(world) {
@@ -33,6 +34,8 @@ export function createWorld(levelIndex) {
     thief: createThief(grid.start),
     guards: level.guards.map(createGuard),
     cameras: level.cameras.map(createCamera),
+    lasers: (level.lasers ?? []).map(createLaser),
+    trips: 0,
     kit: createKit(),
     smokes: [],
     pings: [],
@@ -105,6 +108,21 @@ export function stepWorld(world, input, dt) {
   }
 
   for (const camera of world.cameras) updateCamera(camera, world.time, dt);
+  for (const laser of world.lasers) {
+    updateLaser(laser, world.time, dt);
+    if (breaksBeam(laser, thief.x, thief.y, THIEF.radius)) {
+      laser.cooldown = LASER.rearm;
+      world.trips += 1;
+      world.alarm = Math.min(ALARM.max, world.alarm + LASER.trip);
+      world.unseen = 0;
+      world.lastSource = 'A laser tripwire';
+      for (const guard of world.guards) {
+        if (Math.hypot(guard.x - thief.x, guard.y - thief.y) < LASER.callRadius) hearNoise(guard, grid, thief.x, thief.y);
+      }
+      say(world, 'Laser tripped! +22% alarm');
+      events.push('laser');
+    }
+  }
   const seen = detect(world);
   for (const guard of world.guards) updateGuard(guard, grid, thief, guard.spotted, seen.lockdown, dt);
   // A camera that sees you calls the nearest guards over.
